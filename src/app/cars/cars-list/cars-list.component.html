@@ -1,0 +1,63 @@
+<cs-header>
+    <p levels>cars</p>
+
+    <div content>
+        <p>List of Cars in services</p>
+    </div>
+</cs-header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table *ngIf="cars && cars.length > 0; else noCarsInfo" class="cs-table table table-striped">
+                <!-- cars && dodajemy aby sie na pocztaku wczytało zanim sie z serwera pobierze -->
+                <thead>
+                    <tr>
+                        <th>car</th>
+                        <th>plate</th>
+                        <th>delivery date</th>
+                        <th>deadline</th>
+                        <th>clinet</th>
+                        <th>cost</th>
+                        <th>action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let car of cars; let i = index" class="row-car" (click)="goToCarDetails(car)">
+                        <td [ngClass]="{'row-error': car.isFullyDamaged}"> {{ car?.model }} </td>
+                        <td> {{ car?.plate }} </td>
+                        <td> {{ car?.deliveryDate }} </td>
+                        <td> {{ car?.deadline }} </td>
+                        <td> {{ car?.clientFirstName.firstName }} {{ car?.clientSurname.surname }} </td>
+                        <td> {{ car?.cost }} </td>
+                        <td>Actrion Placeholder</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ng-template #noCarsInfo>
+                <div class="no-cars-info">
+                    <p>Currently no cars in service</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button (click)="showGross()" class="btn btn-primary btn-sm float-right">
+                SHOW GROSS
+            </button>
+        </div>
+    </div>
+
+    <cs-total-cost #totalCostRef [totalCost]="totalCost" (shownGross)="onShownGross($event)"></cs-total-cost>
+    <div class="row" *ngIf="grossCost">
+        <div class="col-sm-12">
+            <div class="total-cost">
+                <p class="text-right">TOTAL GROSS COST: {{ grossCost }} </p>
+            </div>
+        </div>
+    </div>
+
+</div>
